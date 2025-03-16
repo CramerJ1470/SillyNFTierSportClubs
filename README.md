@@ -30,7 +30,7 @@
  SillyNFTier Sport Token aims to help individuals learn and utilize smart contracts for use with the sports industry by providing a cutting-edge Blockchain platform where users can trade future contracts of players, invest in clubs, and engage in predictive match outcomes. We strive to create an innovative, fair, and transparent ecosystem that benefits sports enthusiasts, clubs, ,players and investors worldwide.
 </p>
 
-##install-forge
+##Install Forge
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
