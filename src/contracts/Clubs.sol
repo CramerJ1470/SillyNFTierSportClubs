@@ -38,32 +38,37 @@ contract Club is ERC20 {
 }
 
 contract ClubsFactory is Ownable {
-    uint256 constant maxClubTokens = 10**6;
+    uint256 constant maxClubTokens = 10 ** 6;
     mapping(string => address) public clubs; //input=> clubName:clubAddress
     mapping(address => address) public playerClubs; // input=> playerAddress: clubAddress
     mapping(string => uint256) public clubPrices; //input=> clubName:clubPrice in SportToken
-    mapping(string => address) public players;//input=> playerName:plyerAddress
-    mapping(string => address) private playerOwners;//input=> playerName: playerTokenOwner
-    mapping(string => uint256) public playerIds;//input=> playerName: playerId
-    mapping(string => uint256) public playerNumbers;//input=> playerName: playerJerseyNumber
+    mapping(string => address) public players; //input=> playerName:plyerAddress
+    mapping(string => address) private playerOwners; //input=> playerName: playerTokenOwner
+    mapping(string => uint256) public playerIds; //input=> playerName: playerId
+    mapping(string => uint256) public playerNumbers; //input=> playerName: playerJerseyNumber
     mapping(string => string) public playerPosition; //input=> playerName: playerPosition
     mapping(string => string) public playersTeam; //input=> playerName: clubName
-    mapping(bytes32 => string[]) public teamsPlayerList; //input=> keccal256 hash of clubName:array of playersNames
+    mapping(bytes32 => string[]) public teamsPlayerList; //input=> clubName:array of playersNames
+    string[] public clubsList;
+    uint256 public clubsLength;
 
     SportToken sportToken;
 
-    constructor(address initialOwner, address _sportToken)
-        Ownable(initialOwner)
-    {
+    constructor(
+        address initialOwner,
+        address _sportToken
+    ) Ownable(initialOwner) {
         sportToken = SportToken(_sportToken);
     }
 
-    function addClub(string memory name, string memory symbol)
-        public
-        onlyOwner
-    {
+    function addClub(
+        string memory name,
+        string memory symbol
+    ) public onlyOwner {
         require(clubs[name] == address(0), "Club exists");
         clubs[name] = address(new Club(name, symbol, maxClubTokens));
+        clubsList.push(name);
+        clubsLength = clubsList.length;
     }
 
     function buyClubToken(
@@ -72,7 +77,7 @@ contract ClubsFactory is Ownable {
         uint256 price
     ) public {
         require(clubs[clubName] != address(0), "Club not exist");
-        prices[clubName] = price;
+        clubPrices[clubName] = price;
         sportToken.transferFrom(
             msg.sender,
             address(this),
@@ -87,7 +92,7 @@ contract ClubsFactory is Ownable {
         uint256 price
     ) public {
         require(clubs[clubName] != address(0), "Club not exist");
-        prices[clubName] = price;
+        clubPrices[clubName] = price;
         Club(clubs[clubName]).transferFrom(
             msg.sender,
             address(this),
@@ -104,7 +109,7 @@ contract ClubsFactory is Ownable {
         uint256 _playerId,
         uint256 _playerNumber,
         string memory _playerPosition
-                ) public {
+    ) public {
         require(players[playerName] == address(0), "Player exists");
         players[playerName] = address(
             new Player(
@@ -114,8 +119,9 @@ contract ClubsFactory is Ownable {
                 clubName,
                 _playerId,
                 _playerNumber,
-                _playerPosition)
-                      );
+                _playerPosition
+            )
+        );
         playerClubs[players[playerName]] = clubs[clubName];
         playerOwners[playerName] = ownerAddress;
         playerIds[playerName] = _playerId;
@@ -124,7 +130,5 @@ contract ClubsFactory is Ownable {
         playersTeam[playerName] = clubName;
         bytes32 teamKey = keccak256(abi.encodePacked(clubName));
         teamsPlayerList[teamKey].push(playerName);
-
-
     }
 }
