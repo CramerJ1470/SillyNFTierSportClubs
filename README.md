@@ -29,7 +29,33 @@
 <p align="justify">
  SillyNFTier Sport Token aims to help individuals learn and utilize smart contracts for use with the sports industry by providing a cutting-edge Blockchain platform where users can trade future contracts of players, invest in clubs, and engage in predictive match outcomes. We strive to create an innovative, fair, and transparent ecosystem that benefits sports enthusiasts, clubs, ,players and investors worldwide.
 </p>
+#
 
+> ## Core Features Implemented
+
+- Tokenization of Sports Clubs: SillyNFTier facilitates the tokenization of sports clubs and playersvallowing users to invest in and own fractionalized shares of various clubs and players. The ClubsFactory contract enables the creation of unique ERC-20 tokens representing ownership in specific sports clubs and players.
+
+- Club Token Marketplace: The platform incorporates a marketplace for buying and selling club tokens. Users can purchase club tokens using the native SillyNFTier Sport Token (SST), enabling them to participate in sports club ownership and trade these assets.
+
+- Chainlink Oracle Integration: The system integrates Chainlink oracles using Chainlink Automations and Chainlink Functions to obtain external data necessary for various functionalities. This integration enables fetching data from external sources like APIs (e.g., Sportradar), updating token values, and determining price fluctuations based on real-time information.
+
+- ICO Allocation: The SiilyNFTier Sport Token contract includes an Initial Coin Offering (ICO) allocation feature, granting a specific amount of tokens to ICO participants (100 SST). This process is managed to prevent multiple claims from the same address.
+
+- Ownership and Transfer of Tokens: Users can transfer ownership of club tokens, SillyNFTier Sport Tokens, or clubs/player tokens representing positions between addresses. This feature enables trading, staking, or using tokens within the SillyNFTier Sport Token platform.
+
+- Admin Functions and Controls: The system includes functionalities limited to admin roles, such as adding new clubs, setting club prices, and managing the platform's core operations. These controls ensure platform integrity and governance.
+
+`Test Coverage`
+- Unit testing ensures that all the codes meet the quality standards and the functions return the expected output.
+- Test coverage shows us the extent of how much of our codes are covered by tests. We ideally aim for 100% coverage.
+
+`Natspec commenting`
+- This documentation provides information about the codebase and their implementation for both technical and non technical people. 
+
+
+</p>
+
+#
 
 #
 > ## Technologies
@@ -141,7 +167,7 @@ $ npm run start
 
 This Project was created by these awesome dedicated members
 
- <a href="https://github.com/CramerJ1470" target="_blank">**John Cramer**</a>
+ <a href="https://github.com/CramerJ1470" target="_blank">**John Cramer SillyNFTier**</a>
 <br />
 
 #
