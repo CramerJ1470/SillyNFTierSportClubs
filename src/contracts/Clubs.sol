@@ -53,7 +53,7 @@ contract ClubsFactory is Ownable {
     mapping(string => uint256) public playerNumbers;
     mapping(string => string) public playerPosition;
     mapping(string => string) public playersTeam;
-    mapping(bytes32 => string[]) public teamsPlayerList;
+    mapping(bytes32 => string[]) public clubPlayerList;
 
     SportToken sportToken;
 
@@ -129,7 +129,7 @@ contract ClubsFactory is Ownable {
         playerNumbers[playerName] = _playerNumber;
         playerPosition[playerName] = _playerPosition;
         playersTeam[playerName] = clubName;
-        bytes32 teamKey = keccak256(abi.encodePacked(clubName));
-        teamsPlayerList[teamKey].push(playerName);
+        bytes32 clubKey = keccak256(abi.encodePacked(clubName)); //saving gas!!!
+        clubPlayerList[clubKey].push(playerName);
     }
 }
