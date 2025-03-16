@@ -8,11 +8,11 @@ import "./SportToken.sol";
 import "./Player.sol";
 
 contract Club is ERC20 {
-    string public logo;
-    uint256 public stadiumsize;
-    uint256 public seatPrice;
-    string public clubCity;
-    string public clubManager;
+    string public logo; //https address of team logo
+    uint256 public stadiumsize; //stadium capacity
+    uint256 public seatPrice; //average stadium seat price
+    string public clubCity; //city of stadium
+    string public clubManager; //current manager
 
     constructor(
         string memory name,
@@ -38,36 +38,30 @@ contract Club is ERC20 {
 }
 
 contract ClubsFactory is Ownable {
-    uint256 constant maxClubTokens = 10 ** 24;
-    mapping(string => address) public clubs;
-    mapping(address => address) public playerClubs;
-    mapping(string => uint256) public prices;
-    mapping(string => address) public players;
-    mapping(string => string) public logos;
-    mapping(string => uint256) public stadiumsizes;
-    mapping(string => uint256) public avgSeatPrices;
-    mapping(string => string) public clubCities;
-    mapping(string => string) public clubManagers;
-    mapping(string => address) private playerOwners;
-    mapping(string => uint256) public playerIds;
-    mapping(string => uint256) public playerNumbers;
-    mapping(string => string) public playerPosition;
-    mapping(string => string) public playersTeam;
-    mapping(bytes32 => string[]) public clubPlayerList;
+    uint256 constant maxClubTokens = 10**6;
+    mapping(string => address) public clubs; //input=> clubName:clubAddress
+    mapping(address => address) public playerClubs; // input=> playerAddress: clubAddress
+    mapping(string => uint256) public clubPrices; //input=> clubName:clubPrice in SportToken
+    mapping(string => address) public players;//input=> playerName:plyerAddress
+    mapping(string => address) private playerOwners;//input=> playerName: playerTokenOwner
+    mapping(string => uint256) public playerIds;//input=> playerName: playerId
+    mapping(string => uint256) public playerNumbers;//input=> playerName: playerJerseyNumber
+    mapping(string => string) public playerPosition; //input=> playerName: playerPosition
+    mapping(string => string) public playersTeam; //input=> playerName: clubName
+    mapping(bytes32 => string[]) public teamsPlayerList; //input=> keccal256 hash of clubName:array of playersNames
 
     SportToken sportToken;
 
-    constructor(
-        address initialOwner,
-        address _sportToken
-    ) Ownable(initialOwner) {
+    constructor(address initialOwner, address _sportToken)
+        Ownable(initialOwner)
+    {
         sportToken = SportToken(_sportToken);
     }
 
-    function addClub(
-        string memory name,
-        string memory symbol
-    ) public onlyOwner {
+    function addClub(string memory name, string memory symbol)
+        public
+        onlyOwner
+    {
         require(clubs[name] == address(0), "Club exists");
         clubs[name] = address(new Club(name, symbol, maxClubTokens));
     }
@@ -110,7 +104,7 @@ contract ClubsFactory is Ownable {
         uint256 _playerId,
         uint256 _playerNumber,
         string memory _playerPosition
-    ) public {
+                ) public {
         require(players[playerName] == address(0), "Player exists");
         players[playerName] = address(
             new Player(
@@ -120,16 +114,17 @@ contract ClubsFactory is Ownable {
                 clubName,
                 _playerId,
                 _playerNumber,
-                _playerPosition
-            )
-        );
+                _playerPosition)
+                      );
         playerClubs[players[playerName]] = clubs[clubName];
         playerOwners[playerName] = ownerAddress;
         playerIds[playerName] = _playerId;
         playerNumbers[playerName] = _playerNumber;
         playerPosition[playerName] = _playerPosition;
         playersTeam[playerName] = clubName;
-        bytes32 clubKey = keccak256(abi.encodePacked(clubName)); //saving gas!!!
-        clubPlayerList[clubKey].push(playerName);
+        bytes32 teamKey = keccak256(abi.encodePacked(clubName));
+        teamsPlayerList[teamKey].push(playerName);
+
+
     }
 }
