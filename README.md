@@ -30,7 +30,19 @@
  SillyNFTier Sport Token aims to help individuals learn and utilize smart contracts for use with the sports industry by providing a cutting-edge Blockchain platform where users can trade future contracts of players, invest in clubs, and engage in predictive match outcomes. We strive to create an innovative, fair, and transparent ecosystem that benefits sports enthusiasts, clubs, ,players and investors worldwide.
 </p>
 
-##Install Forge
+
+#
+> ## Technologies
+| <b><u>Stack</u></b> | <b><u>Usage</u></b> |
+| :------------------ | :------------------ |
+| **`Solidity`**      | Smart contract      |
+| **`React JS`**      | Frontend            |
+| **`Ethers JS`**     | Blockchain access   |
+| **`Forge`**         | Testing/Interaction |
+
+#
+
+> ## Install Forge
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
@@ -96,3 +108,55 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+> ## Setup the Frontend
+- First run the frontend on your local server to ensure it's fully functional before building for production.
+
+#
+> ### Install Dependencies
+- Setup and install dependencies
+ 
+```shell
+$ npm install 
+
+$ cd client 
+
+$ npm install
+
+$ cd..    
+
+$ cd server
+
+$ npm install
+
+$ cd..
+
+$ npm run start
+```
+
+
+#
+
+> ## Contributors
+
+This Project was created by these awesome dedicated members
+
+ <a href="https://github.com/CramerJ1470" target="_blank">**John Cramer**</a>
+<br />
+
+#
+
+#
+> ## Contributing to the project
+
+If you find something worth contributing, please fork the repo, make a pull request and add valid and well-reasoned explanations about your changes or comments.
+
+Before adding a pull request, please note:
+
+- This is an open source project.
+- Your contributions should be inviting and clear.
+- Any additions should be relevant.
+- New features should be easy to contribute to.
+
+All **`suggestions`** are welcome!
+#
