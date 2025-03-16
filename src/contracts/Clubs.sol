@@ -9,36 +9,36 @@ import "./Player.sol";
 
 contract Club is ERC20 {
     string public logo; //https address of team logo
-    uint256 public stadiumsize; //stadium capacity
-    uint256 public seatPrice; //average stadium seat price
+    uint256 public stadiumSize; //stadium capacity
+    uint256 public avgSeatPrice; //average stadium seat price
     string public clubCity; //city of stadium
-    string public clubManager; //current manager
+    string public clubCoach; //current manager
+    uint256 public clubStanding; //current standing
+    uint256 public clubPrice; //currentClubPrice;
 
     constructor(
         string memory name,
         string memory symbol,
-        uint256 amount
+        uint256 amount,
+        string memory _logo,
+        uint256 _stadiumSize,
+        uint256 _avgSeatPrice,
+        string memory _clubCity,
+        string memory _clubCoach,
+        uint256 _clubStanding
     ) ERC20(name, symbol) {
         _mint(msg.sender, amount);
-    }
 
-    function addInfo(
-        string memory _logo, // specify the data type as a string and assign it to `_logo` (note: leading underscore is conventional for variables)
-        uint256 _stadiumsize,
-        uint256 _seatPrice,
-        string memory _clubCity,
-        string memory _clubManager // same here
-    ) public {
         logo = _logo;
-        stadiumsize = _stadiumsize;
-        seatPrice = _seatPrice;
+        stadiumSize = _stadiumSize;
+        avgSeatPrice = _avgSeatPrice;
         clubCity = _clubCity;
-        clubManager = _clubManager;
+        clubCoach = _clubCoach;
+        clubStanding = _clubStanding;
     }
 }
 
 contract ClubsFactory is Ownable {
-    uint256 constant maxClubTokens = 10 ** 6;
     mapping(string => address) public clubs; //input=> clubName:clubAddress
     mapping(address => address) public playerClubs; // input=> playerAddress: clubAddress
     mapping(string => uint256) public clubPrices; //input=> clubName:clubPrice in SportToken
@@ -63,10 +63,30 @@ contract ClubsFactory is Ownable {
 
     function addClub(
         string memory name,
-        string memory symbol
+        string memory symbol,
+        uint256 amount,
+        string memory logo,
+        uint256 stadiumSize,
+        uint256 avgSeatPrice,
+        string memory clubCity,
+        string memory clubCoach,
+        uint256 clubStanding
     ) public onlyOwner {
         require(clubs[name] == address(0), "Club exists");
-        clubs[name] = address(new Club(name, symbol, maxClubTokens));
+
+        clubs[name] = address(
+            new Club(
+                name,
+                symbol,
+                amount,
+                logo,
+                stadiumSize,
+                avgSeatPrice,
+                clubCity,
+                clubCoach,
+                clubStanding
+            )
+        );
         clubsList.push(name);
         clubsLength = clubsList.length;
     }
