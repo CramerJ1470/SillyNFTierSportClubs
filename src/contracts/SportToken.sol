@@ -10,7 +10,8 @@ contract SportToken is ERC20 {
     constructor(
         string memory name,
         string memory symbol,
-        uint256 amount    ) ERC20(name, symbol) {
+        uint256 amount
+    ) ERC20(name, symbol) {
         uint256 mintAmount = amount * (10 ** decimals());
         _mint(msg.sender, mintAmount / 10);
         _mint(address(this), mintAmount - mintAmount / 10);

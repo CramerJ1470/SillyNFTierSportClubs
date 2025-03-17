@@ -35,23 +35,6 @@ contract Player is ERC20 {
         _;
     }
 
-    function getPlayerId() public view returns (uint256) {
-        return playerId;
-    }
-    function getPlayerTeam() public view returns (string memory) {
-        return team;
-    }
-    function getPlayerNumber() public view returns (uint256) {
-        return playerNumber;
-    }
-    function getPlayerPosition() public view returns (string memory ) {
-        return playerPosition;
-    }
- 
-    function getPlayerOwner() public view returns (address) {
-        return owner;
-    }
-
     function changeTeamJerseyNumberPosition(string memory _newTeam, uint256 _jerseyNumber, string memory _playerPosition) public onlyOwner{
         team = _newTeam;
         playerNumber = _jerseyNumber;
