@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Player is ERC20 {
-  
     address public owner;
     string public team;
     uint256 public playerId;
@@ -22,7 +21,7 @@ contract Player is ERC20 {
         string memory _playerPosition
     ) ERC20(name, symbol) {
         _mint(msg.sender, 10e6);
-       
+
         owner = _owner;
         team = _team;
         playerId = _playerId;
@@ -30,13 +29,21 @@ contract Player is ERC20 {
         playerPosition = _playerPosition;
     }
 
-    modifier onlyOwner {
-        require(msg.sender == owner, "Need to be Owner to change perfomr this.");
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Need to be Owner to change perfomr this."
+        );
         _;
-    }
-
-    function changeTeamJerseyNumberPosition(string memory _newTeam, uint256 _jerseyNumber, string memory _playerPosition) public onlyOwner{
+    }  
+    
+    function changeTeamJerseyNumberPosition(
+        string memory _newTeam,
+        uint256 _jerseyNumber,
+        string memory _playerPosition
+    ) public onlyOwner {
         team = _newTeam;
         playerNumber = _jerseyNumber;
         playerPosition = _playerPosition;
     }
+}
