@@ -48,8 +48,7 @@ contract ClubsFactory is Ownable {
     mapping(string => string[]) public teamsPlayerList; //input=> clubName:array of playersNames
     string[] public clubsList;
     uint256 public clubsLength;
-    string[] public teamsPlayers;
-
+    
     SportToken sportToken;
 
     constructor(address initialOwner, address _sportToken)
@@ -144,11 +143,11 @@ contract ClubsFactory is Ownable {
         teamsPlayerList[clubName].push(playerName);
     }
 
-    function getPlayersOnTeam(string memory _clubName)  public returns (string[] memory) {
-        uint teamLength = teamsPlayerList[_clubName].length;
-        for (uint j = 0; j < teamLength;j++) {
-            teamsPlayers.push(teamsPlayerList[_clubName][j]);
-        }
-        return teamsPlayers;
+    function getPlayersOnTeam(string memory _clubName)  public view returns (string[] memory) {
+          return teamsPlayerList[_clubName];
+    }
+
+        function getTeamsInLeague() public view returns (string[] memory) {
+           return clubsList;
     }
 }
