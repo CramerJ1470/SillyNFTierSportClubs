@@ -18,9 +18,9 @@ contract SportToken is ERC20 {
         _mint(address(this), mintAmount - mintAmount / 10);
     }
 
-    function getICO() public {
-        require(!icoRegister[msg.sender], "This address got the ICO");
-        this.transfer(msg.sender, icoAmount);
-        icoRegister[msg.sender] = true;
-    }
+    // function getICO() public {
+    //     require(!icoRegister[msg.sender], "This address got the ICO");
+    //     this.transfer(msg.sender, icoAmount);
+    //     icoRegister[msg.sender] = true;
+    // }
 }

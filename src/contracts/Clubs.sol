@@ -36,7 +36,6 @@ contract Club is ERC20 {
         clubCoach = _clubCoach;
         clubStanding = _clubStanding;
     }
-    
 }
 
 contract ClubsFactory is Ownable {
@@ -48,12 +47,13 @@ contract ClubsFactory is Ownable {
     mapping(string => string[]) public teamsPlayerList; //input=> clubName:array of playersNames
     string[] public clubsList;
     uint256 public clubsLength;
-    
+
     SportToken sportToken;
 
-    constructor(address initialOwner, address _sportToken)
-        Ownable(initialOwner)
-    {
+    constructor(
+        address initialOwner,
+        address _sportToken
+    ) Ownable(initialOwner) {
         sportToken = SportToken(_sportToken);
     }
 
@@ -69,7 +69,7 @@ contract ClubsFactory is Ownable {
         uint256 clubStanding
     ) public onlyOwner {
         require(clubs[name] == address(0), "Club exists");
-        
+
         clubs[name] = address(
             new Club(
                 name,
@@ -143,11 +143,13 @@ contract ClubsFactory is Ownable {
         teamsPlayerList[clubName].push(playerName);
     }
 
-    function getPlayersOnTeam(string memory _clubName)  public view returns (string[] memory) {
-          return teamsPlayerList[_clubName];
+    function getPlayersOnTeam(
+        string memory _clubName
+    ) public view returns (string[] memory) {
+        return teamsPlayerList[_clubName];
     }
 
-        function getTeamsInLeague() public view returns (string[] memory) {
-           return clubsList;
+    function getTeamsInLeague() public view returns (string[] memory) {
+        return clubsList;
     }
 }

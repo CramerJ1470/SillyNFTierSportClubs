@@ -35,8 +35,8 @@ contract Player is ERC20 {
             "Need to be Owner to change perfomr this."
         );
         _;
-    }  
-    
+    }
+
     function changeTeamJerseyNumberPosition(
         string memory _newTeam,
         uint256 _jerseyNumber,
