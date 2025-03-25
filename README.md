@@ -220,7 +220,7 @@ You use a Chainlink Functions subscription to pay for, manage, and track Functio
 
   2. Click Connect wallet:
 
-<p align="center" width="60%">
+<p align="center" width="500px">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing.jpg" alt="site4"/>
 </p>
 
