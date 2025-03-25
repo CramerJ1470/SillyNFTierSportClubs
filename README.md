@@ -170,7 +170,7 @@ $ npm run start
 
 #
 
-> ## Setyp .env file
+> ## Setup .env file...NOT
 
 1. Never Ever use an .env file to store your private Keys and passwords....
 2. Watch this!
