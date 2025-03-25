@@ -236,8 +236,8 @@ You use a Chainlink Functions subscription to pay for, manage, and track Functio
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/wallet-connected-ethereum-sepolia.webp"alt="site5"/>
 </p>
 
-  5.<p align="center" width="100%">
-  <img src=" https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing-wallet-connected.jpg" alt="site5"/>
+  5. <p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing-wallet-connected.jpg" alt="site5"/>
 </p> 
 
   6. Provide an email address and an optional subscription name:
