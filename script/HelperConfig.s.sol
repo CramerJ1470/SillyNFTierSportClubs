@@ -1,103 +1,88 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+// // SPDX-License-Identifier: MIT
 
-// import {LinkToken} from "../test/mocks/LinkToken.sol";
-import {Script, console2} from "forge-std/Script.sol";
-import {SportToken} from "src/contracts/SportToken.sol";
+pragma solidity ^0.8.28;
 
-abstract contract CodeConstants {
-    string public TOKEN_NAME = "SillyNFTier Sport Token";
-    string public TOKEN_SYMBOL= "SST";
-    uint256 public INITIAL_AMOUNT= 1000000;
-    
-    // LINK / ETH price
-    int256 public MOCK_WEI_PER_UINT_LINK = 4e15;
+// // 1. Deploy mocks when we are on a local anvil chain
+// // 2. Keep track of contract address across different chains
+// // 3. Sepolia ETH/USD
+// // Mainnet ETH/USD
+// pragma solidity ^0.8.18;
 
-    address public FOUNDRY_DEFAULT_SENDER = 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38;
+// import {Script} from "forge-std/Script.sol";
+// import {MockV3Aggregator} from "../test/mock/MockV3Aggregator.sol";
 
+// contract HelperConfig is Script {
+//     // If we are on a local anvil, we deploy mocks
+//     // Otherwise, grab the existing address from the live network
+//     NetworkConfig public activeNetworkConfig;
+//     string[] INITIAL_STANDINGS = [
+//         "Liverpool FC",
+//         "Arsenal FC",
+//         "Nottingham Forest FC",
+//         "Chelsea FC",
+//         "Manchester City FC",
+//         "Newcastle United FC",
+//         "Brighton & Hove Albion FC",
+//         "Fulham FC",
+//         "Aston Villa FC",
+//         "Bournemouth FC",
+//         "Brentford FC",
+//         "Crystal Palace FC",
+//         "Manchester United FC",
+//         "Tottenham Hotspur FC",
+//         "Everton FC",
+//         "West Ham United FC",
+//         "Wolverhampton Wanderers FC",
+//         "Ipswich Town FC",
+//         "Leicester City FC",
+//         "Southampton FC"
+//     ];
 
-    uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11155111;
-    uint256 public constant ETH_MAINNET_CHAIN_ID = 1;
-    uint256 public constant LOCAL_CHAIN_ID = 31337;
-}
+//     struct NetworkConfig {
+//         address priceFeed; //ETH/USD price feed address
+//     }
 
-contract HelperConfig is CodeConstants, Script {
-    /*//////////////////////////////////////////////////////////////
-                                 ERRORS
-    //////////////////////////////////////////////////////////////*/
-    error HelperConfig__InvalidChainId();
+//     constructor() {
+//         if (block.chainid == 11155111) {
+//             activeNetworkConfig = getSepoliaEthConfig();
+//         } else if (block.chainid == 1) {
+//             activeNetworkConfig = getEthMainnetConfig();
+//         } else activeNetworkConfig = getOrCreateAnvilEthConfig();
+//     }
 
-    /*//////////////////////////////////////////////////////////////
-                                 TYPES
-    //////////////////////////////////////////////////////////////*/
-    struct NetworkConfig {
-       address account;
+//     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
+//         //price feed address
+//         NetworkConfig memory sepoliaConfig = NetworkConfig({
+//             priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
+//         });
+//         return sepoliaConfig;
+//     }
 
-    }
+//     function getEthMainnetConfig() public pure returns (NetworkConfig memory) {
+//         //price feed address
+//         NetworkConfig memory ethMainnetConfig = NetworkConfig({
+//             priceFeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+//         });
+//         return ethMainnetConfig;
+//     }
 
-    /*//////////////////////////////////////////////////////////////
-                            STATE VARIABLES
-    //////////////////////////////////////////////////////////////*/
-    // Local network state variables
-    NetworkConfig public localNetworkConfig;
-    mapping(uint256 chainId => NetworkConfig) public networkConfigs;
+//     function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
+//         if (activeNetworkConfig.priceFeed != address(0)) {
+//             return activeNetworkConfig;
+//         }
+//         //price fee address
 
-    /*//////////////////////////////////////////////////////////////
-                               FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
-    constructor() {
-        networkConfigs[ETH_SEPOLIA_CHAIN_ID] = getSepoliaEthConfig();
-        // networkConfigs[ETH_MAINNET_CHAIN_ID] = getMainnetEthConfig();
-        // Note: We skip doing the local config
-    }
+//         // 1. deploy the mocks
+//         // 2. return the mocks address
+//         vm.startBroadcast();
+//         MockV3Aggregator mockPriceFeed = new MockV3Aggregator(
+//             INITIAL_STANDINGS
+//         );
+//         vm.stopBroadcast();
 
-    function getConfig() public returns (NetworkConfig memory) {
-        return getConfigByChainId(block.chainid);
-    }
-
-    function setConfig(uint256 chainId, NetworkConfig memory networkConfig) public {
-        networkConfigs[chainId] = networkConfig;
-    }
-
-    function getConfigByChainId(uint256 chainId) public returns (NetworkConfig memory) {
-        if (networkConfigs[chainId].account != address(0)) {
-            return networkConfigs[chainId];
-        } else if (chainId == LOCAL_CHAIN_ID) {
-            return getOrCreateAnvilEthConfig();
-        } else {
-            revert HelperConfig__InvalidChainId();
-        }
-    }
-
-    // function getMainnetEthConfig() public pure returns (NetworkConfig memory mainnetNetworkConfig) {
-    //     mainnetNetworkConfig = NetworkConfig({
-         
-    //         account: 0x643315C9Be056cDEA171F4e7b2222a4ddaB9F88D
-    //     });
-    // }
-
-    function getSepoliaEthConfig() public pure returns (NetworkConfig memory sepoliaNetworkConfig) {
-        sepoliaNetworkConfig = NetworkConfig({
-          account: 0x643315C9Be056cDEA171F4e7b2222a4ddaB9F88D
-        });
-    }
-
-    function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
-        // Check to see if we set an active network config
-        if (localNetworkConfig.account != address(0)) {
-            return localNetworkConfig;
-        }
-
-        console2.log(unicode"⚠️ You have deployed a mock contract!");
-        console2.log("Make sure this was intentional");
-        vm.startBroadcast();
-  
-        vm.stopBroadcast();
-
-        localNetworkConfig = NetworkConfig({
-            account: FOUNDRY_DEFAULT_SENDER
-        });
-        vm.deal(localNetworkConfig.account, 100 ether);
-        return localNetworkConfig;
-    }
-}
+//         NetworkConfig memory anvilConfig = NetworkConfig({
+//             priceFeed: address(mockPriceFeed)
+//         });
+//         return anvilConfig;
+//     }
+// }
