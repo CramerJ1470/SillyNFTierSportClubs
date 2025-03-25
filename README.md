@@ -174,7 +174,7 @@ $ npm run start
 
 1. Never Ever use an .env file to store your private Keys and passwords....
 2. Watch this!
-   <a href="https://updraft.cyfrin.io/courses/foundry/foundry-simple-storage/never-use-a-env-file?lesson_format=written" target="_blank">Cyfrin Updraft Encrypting your keys in Forge</a>
+   <a href="https://updraft.cyfrin.io/courses/foundry/foundry-simple-storage/never-use-a-env-file?lesson_format=video" target="_blank">Cyfrin Updraft Encrypting your keys in Forge</a>
 
 3. you will need these Constants in storage:
 
