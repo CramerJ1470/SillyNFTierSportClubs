@@ -15,6 +15,7 @@
   - [Install Forge](#install-forge)
   - [Env Setup](#env-setup)
   - [Setup Anvil](#setup-anvil)
+  - [Setup Chainlink](#chainlink-setup)
 - [Setup the Frontend](#setup-the-frontend)
   - [Install Dependencies](#install-dependencies)
 - [Testing the Smartcontract](#testing-the-smartcontract)
@@ -46,25 +47,28 @@
 - Admin Functions and Controls: The system includes functionalities limited to admin roles, such as adding new clubs, setting club prices, and managing the platform's core operations. These controls ensure platform integrity and governance.
 
 `Test Coverage`
+
 - Unit testing ensures that all the codes meet the quality standards and the functions return the expected output.
 - Test coverage shows us the extent of how much of our codes are covered by tests. We ideally aim for 100% coverage.
 
 `Natspec commenting`
-- This documentation provides information about the codebase and their implementation for both technical and non technical people. 
 
+- This documentation provides information about the codebase and their implementation for both technical and non technical people.
 
 </p>
 
 #
 
 #
+
 > ## Technologies
-| <b><u>Stack</u></b> | <b><u>Usage</u></b> |
-| :------------------ | :------------------ |
-| **`Solidity`**      | Smart contract      |
-| **`React JS`**      | Frontend            |
-| **`Ethers JS`**     | Blockchain access   |
-| **`Forge`**         | Testing/Interaction |
+>
+> | <b><u>Stack</u></b> | <b><u>Usage</u></b> |
+> | :------------------ | :------------------ |
+> | **`Solidity`**      | Smart contract      |
+> | **`React JS`**      | Frontend            |
+> | **`Ethers JS`**     | Blockchain access   |
+> | **`Forge`**         | Testing/Interaction |
 
 #
 
@@ -136,20 +140,23 @@ $ cast --help
 ```
 
 > ## Setup the Frontend
+
 - First run the frontend on your local server to ensure it's fully functional before building for production.
 
 #
-> ### Install Dependencies
-- Setup and install dependencies
- 
-```shell
-$ npm install 
 
-$ cd client 
+> ### Install Dependencies
+
+- Setup and install dependencies
+
+```shell
+$ npm install
+
+$ cd client
 
 $ npm install
 
-$ cd..    
+$ cd..
 
 $ cd server
 
@@ -160,19 +167,100 @@ $ cd..
 $ npm run start
 ```
 
-
 #
+
+> ## Chainlink Setup
+
+### Configure your wallet
+
+You will test on Sepolia, so you must have an Ethereum web3 wallet with enough testnet ETH and LINK tokens. Testnet ETH is the native gas fee token on Sepolia. You will use testnet ETH tokens to pay for gas whenever you make a transaction on Sepolia. On the other hand, you will use LINK tokens to pay the Chainlink Functions Decentralized Oracles Network (DON) for processing your request.
+
+  1. <a href="https://docs.chain.link/quickstarts/deploy-your-first-contract#install-and-fund-your-metamask-wallet" target="_blank">Install the MetaMask wallet </a> or other Ethereum web3 wallet.
+
+  2. Set the network for your wallet to the Sepolia testnet. If you need to add Sepolia to your wallet, you can find the chain ID and the LINK token contract address on the <a href="https://docs.chain.link/resources/link-token-contracts#sepolia-testnet" target="_blank">LINK Token Contracts page.</a>
+
+    - Sepolia testnet and LINK token contract
+
+  3. Request testnet LINK and ETH from <a href="https://faucets.chain.link/sepolia" target="_blank">faucets.chain.link/sepolia.</a>
+
+### Deploy a Functions consumer contract on Sepolia
+  1. Open the GettingStartedFunctionsConsumer.sol contract in Remix.
+
+<a href="https://remix.ethereum.org/#url=https://docs.chain.link/samples/ChainlinkFunctions/GettingStartedFunctionsConsumer.sol&autoCompile=true" target="_blank">Open in Remix</a> 
+
+<a href="https://docs.chain.link/getting-started/conceptual-overview#what-is-remix" target="_blank">What is Remix?</a> 
+ 
+  2. Compile the contract.
+
+  3. Open MetaMask and select the Sepolia network.
+
+  4. In Remix under the Deploy & Run Transactions tab, select Injected Provider - MetaMask in the Environment list. Remix will use the MetaMask wallet to communicate with Sepolia.
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/getting-started/injected-provider.jpg" alt="site1"/>
+</p>
+
+  5. Click the Deploy button to deploy the contract. MetaMask prompts you to confirm the transaction. Check the transaction details to make sure you are deploying the contract to Sepolia.
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/getting-started/deploy.jpg" alt="site2"/>
+</p>
+
+  6. After you confirm the transaction, the contract address appears in the Deployed Contracts list. Copy the contract address and save it for later. You will use this address with a Functions Subscription.
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/getting-started/deployed-contracts.jpg" alt="site3"/>
+</p>
+
+### Create a subscription
+
+You use a Chainlink Functions subscription to pay for, manage, and track Functions requests.
+
+  1. Go to <a href="https://functions.chain.link/" target="_blank">functions.chain.link./a>  
+
+  2. Click Connect wallet:
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing.jpg" alt="site4"/>
+</p>
+
+  3. Read and accept the Chainlink Foundation Terms of Service. Then click MetaMask.
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/accept-CL-foundation-tos.jpg" alt="site5"/>
+</p>
+
+  4. Make sure your wallet is connected to the Sepolia testnet. If not, click the network name in the top right corner of the page and select Sepolia.
+
+<p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/wallet-connected-ethereum-sepolia.webp"alt="site5"/>
+</p>
+
+  5.<p align="center" width="100%">
+  <img src=" https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing-wallet-connected.jpg" alt="site5"/>
+</p> 
+
+  6. Provide an email address and an optional subscription name:
+  <p align="center" width="100%">
+  <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/create-subscription.jpg" alt="site5"/>
+</p> 
+  
+
+  ## Rest of the steps
+
+  <a href="https://docs.chain.link/getting-started/conceptual-overview#what-is-remix" target="_blank">Follow these remaining steps</a> 
 
 > ## Contributors
 
 This Project was created by these awesome dedicated members
 
- <a href="https://github.com/CramerJ1470" target="_blank">**John Cramer SillyNFTier**</a>
+<a href="https://github.com/CramerJ1470" target="_blank">**John Cramer SillyNFTier**</a>
 <br />
 
 #
 
 #
+
 > ## Contributing to the project
 
 If you find something worth contributing, please fork the repo, make a pull request and add valid and well-reasoned explanations about your changes or comments.
@@ -185,4 +273,5 @@ Before adding a pull request, please note:
 - New features should be easy to contribute to.
 
 All **`suggestions`** are welcome!
+
 #
