@@ -177,29 +177,18 @@ $ npm run start
 
   3. you will need these Constants in storage:
 
-  $ SEPOLIA_PRIVATE_KEY
-
-  $ SEPOLIA_PRIVATE_KEY_CAST
-
-  $ SEPOLIA_RPC_URL
-  
-  $ ANVIL_RPC_URL=http://127.0.0.1:8545
-  
-  $ANVIL_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-  
-  $MAINNET_RPC_URL
-
-  $ ZKSYNC_RPC_URL
-  
-  $ LINK_TOKEN_ADDRESS
-
-  $ SPORT_TOKEN_ADDRESS
-
-  $ SPORT_TOKEN_SALE_ADDRESS
-
-  $ SEPOLIA_ADDRESS  // your Sepolia wallet
-  
-  $ X_RAPIDAPI_KEY // your free tier rapidapi key to get standings data
+  - SEPOLIA_PRIVATE_KEY
+  - SEPOLIA_PRIVATE_KEY_CAST
+  - SEPOLIA_RPC_URL
+  - ANVIL_RPC_URL=http://127.0.0.1:8545
+  - ANVIL_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+  - MAINNET_RPC_URL
+  - ZKSYNC_RPC_URL
+  - LINK_TOKEN_ADDRESS
+  - SPORT_TOKEN_ADDRESS
+  - SPORT_TOKEN_SALE_ADDRESS
+  - SEPOLIA_ADDRESS  // your Sepolia wallet
+  - X_RAPIDAPI_KEY // your free tier rapidapi key to get standings data
 
 ### 
 
