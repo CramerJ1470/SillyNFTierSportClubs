@@ -248,7 +248,7 @@ You use a Chainlink Functions subscription to pay for, manage, and track Functio
 
   ## Rest of the steps
 
-  <a href="https://docs.chain.link/getting-started/conceptual-overview#what-is-remix" target="_blank">Follow these remaining steps</a> 
+  <a href="https://docs.chain.link/chainlink-functions/getting-started" target="_blank">Follow these remaining steps</a> 
 
 > ## Contributors
 
