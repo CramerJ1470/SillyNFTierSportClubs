@@ -12,6 +12,7 @@
 - [Repo Setup](#repo-setup)
 - [Requirements](#requirements)
 - [Setup the Project](#setup-the-project)
+  - [Create .env file](#env-file) 
   - [Install Forge](#install-forge)
   - [Env Setup](#env-setup)
   - [Setup Anvil](#setup-anvil)
@@ -168,6 +169,15 @@ $ npm run start
 ```
 
 #
+> ## Setyp .env file
+
+  1. Never Ever use an .env file to store your private Keys and passwords....
+  2. Watch this! 
+<a href="https://updraft.cyfrin.io/courses/foundry/foundry-simple-storage/never-use-a-env-file?lesson_format=written" target="_blank">Cyfrin Updraft Encrypting your keys in Forge</a> 
+
+
+### 
+
 
 > ## Chainlink Setup
 
