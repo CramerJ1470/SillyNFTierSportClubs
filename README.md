@@ -220,28 +220,28 @@ You use a Chainlink Functions subscription to pay for, manage, and track Functio
 
   2. Click Connect wallet:
 
-<p align="center" width="100%">
+<p align="center" width="60%">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing.jpg" alt="site4"/>
 </p>
 
   3. Read and accept the Chainlink Foundation Terms of Service. Then click MetaMask.
 
-<p align="center" width="100%">
+<p align="center" width="60%">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/accept-CL-foundation-tos.jpg" alt="site5"/>
 </p>
 
   4. Make sure your wallet is connected to the Sepolia testnet. If not, click the network name in the top right corner of the page and select Sepolia.
 
-<p align="center" width="100%">
+<p align="center" width="60%">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/wallet-connected-ethereum-sepolia.webp"alt="site5"/>
 </p>
 
-  5. <p align="center" width="100%">
+  5. <p align="center" width="60%">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/frontend-landing-wallet-connected.jpg" alt="site5"/>
 </p> 
 
   6. Provide an email address and an optional subscription name:
-  <p align="center" width="100%">
+  <p align="center" width="60%">
   <img src="https://docs.chain.link/images/chainlink-functions/tutorials/subscription/create-subscription.jpg" alt="site5"/>
 </p> 
   
