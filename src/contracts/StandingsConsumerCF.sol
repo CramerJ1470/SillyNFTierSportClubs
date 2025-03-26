@@ -4,6 +4,7 @@ pragma solidity 0.8.19;
 import {FunctionsClient} from "@chainlink/contracts@1.3.0/src/v0.8/functions/v1_0_0/FunctionsClient.sol";
 import {ConfirmedOwner} from "@chainlink/contracts@1.3.0/src/v0.8/shared/access/ConfirmedOwner.sol";
 import {FunctionsRequest} from "@chainlink/contracts@1.3.0/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol";
+import "./Clubs.sol";
 
 /**
  * Request testnet LINK and ETH here: https://faucets.chain.link/
@@ -25,6 +26,9 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
 
     // Custom error type
     error UnexpectedRequestID(bytes32 requestId);
+
+    // ClubsFactory address (settable after deployment)
+    address public clubsFactory;
 
     // Event to log responses
     event Response(
@@ -56,7 +60,7 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
         "const responseString = JSON.stringify(allNamesSmashed);"
         "if (responseString.length > 256) {throw new Error('Filtered response still exceeds 256 bytes');}"
         "return Functions.encodeString(responseString);";
-        
+
     //Callback gas limit
     uint32 gasLimit = 300000;
 
@@ -71,7 +75,14 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
     /**
      * @notice Initializes the contract with the Chainlink router address and sets the contract owner
      */
-    constructor() FunctionsClient(router) ConfirmedOwner(msg.sender) {}
+    constructor(
+        address _router
+    ) FunctionsClient(_router) ConfirmedOwner(msg.sender) {}
+
+    // Set the address of the ClubsFactory contract after deployment
+    function setClubsFactory(address _clubsFactory) external onlyOwner {
+        clubsFactory = _clubsFactory;
+    }
 
     /**
      * @notice Sends an HTTP request for character information
@@ -79,11 +90,10 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
      * @param args The arguments to pass to the HTTP request
      * @return requestId The ID of the request
      */
-    function sendRequest(uint64 subscriptionId, string[] calldata args)
-        external
-        onlyOwner
-        returns (bytes32 requestId)
-    {
+    function sendRequest(
+        uint64 subscriptionId,
+        string[] calldata args
+    ) external onlyOwner returns (bytes32 requestId) {
         FunctionsRequest.Request memory req;
         req.initializeRequestForInlineJavaScript(source); // Initialize the request with JS code
         if (args.length > 0) req.setArgs(args); // Set the arguments for the request
@@ -115,8 +125,13 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
         }
         // Update the contract's state variables with the response and any errors
         s_lastResponse = response;
-        standings = string(response);
         s_lastError = err;
+
+        // Decode the response into a string array (standings)
+        string[] memory decodedStandings = abi.decode(response, (string[]));
+
+        // Call ClubsFactory contract to update the standings
+        ClubsFactory(clubsFactory).setStandings(decodedStandings);
 
         // Emit an event to log the response
         emit Response(requestId, standings, s_lastResponse, s_lastError);
