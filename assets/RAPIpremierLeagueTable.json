@@ -1,0 +1,204 @@
+{
+    "records": [
+      {
+        "team": "Arsenal",
+        "played": 35,
+        "win": 25,
+        "draw": 5,
+        "loss": 5,
+        "goalsFor": 85,
+        "goalsAgainst": 28,
+        "points": 80
+      },
+      {
+        "team": "Manchester City",
+        "played": 34,
+        "win": 24,
+        "draw": 7,
+        "loss": 3,
+        "goalsFor": 82,
+        "goalsAgainst": 32,
+        "points": 79
+      },
+      {
+        "team": "Liverpool",
+        "played": 35,
+        "win": 22,
+        "draw": 9,
+        "loss": 4,
+        "goalsFor": 77,
+        "goalsAgainst": 36,
+        "points": 75
+      },
+      {
+        "team": "Aston Villa",
+        "played": 35,
+        "win": 20,
+        "draw": 7,
+        "loss": 8,
+        "goalsFor": 73,
+        "goalsAgainst": 52,
+        "points": 67
+      },
+      {
+        "team": "Tottenham",
+        "played": 33,
+        "win": 18,
+        "draw": 6,
+        "loss": 9,
+        "goalsFor": 67,
+        "goalsAgainst": 52,
+        "points": 60
+      },
+      {
+        "team": "Manchester United",
+        "played": 34,
+        "win": 16,
+        "draw": 6,
+        "loss": 12,
+        "goalsFor": 52,
+        "goalsAgainst": 51,
+        "points": 54
+      },
+      {
+        "team": "Newcastle",
+        "played": 34,
+        "win": 16,
+        "draw": 5,
+        "loss": 13,
+        "goalsFor": 74,
+        "goalsAgainst": 55,
+        "points": 53
+      },
+      {
+        "team": "West Ham",
+        "played": 35,
+        "win": 13,
+        "draw": 10,
+        "loss": 12,
+        "goalsFor": 56,
+        "goalsAgainst": 65,
+        "points": 49
+      },
+      {
+        "team": "Chelsea",
+        "played": 33,
+        "win": 13,
+        "draw": 9,
+        "loss": 11,
+        "goalsFor": 63,
+        "goalsAgainst": 59,
+        "points": 48
+      },
+      {
+        "team": "Bournemouth",
+        "played": 35,
+        "win": 13,
+        "draw": 9,
+        "loss": 13,
+        "goalsFor": 52,
+        "goalsAgainst": 60,
+        "points": 48
+      },
+      {
+        "team": "Wolves",
+        "played": 35,
+        "win": 13,
+        "draw": 7,
+        "loss": 15,
+        "goalsFor": 48,
+        "goalsAgainst": 55,
+        "points": 46
+      },
+      {
+        "team": "Brighton",
+        "played": 34,
+        "win": 11,
+        "draw": 11,
+        "loss": 12,
+        "goalsFor": 52,
+        "goalsAgainst": 57,
+        "points": 44
+      },
+      {
+        "team": "Everton",
+        "played": 35,
+        "win": 12,
+        "draw": 8,
+        "loss": 15,
+        "goalsFor": 37,
+        "goalsAgainst": 48,
+        "points": 44
+      },
+      {
+        "team": "Fulham",
+        "played": 35,
+        "win": 12,
+        "draw": 7,
+        "loss": 16,
+        "goalsFor": 51,
+        "goalsAgainst": 55,
+        "points": 43
+      },
+      {
+        "team": "Crystal Palace",
+        "played": 35,
+        "win": 10,
+        "draw": 10,
+        "loss": 15,
+        "goalsFor": 45,
+        "goalsAgainst": 57,
+        "points": 40
+      },
+      {
+        "team": "Brentford",
+        "played": 35,
+        "win": 9,
+        "draw": 8,
+        "loss": 18,
+        "goalsFor": 52,
+        "goalsAgainst": 60,
+        "points": 35
+      },
+      {
+        "team": "Nottingham Forest",
+        "played": 35,
+        "win": 7,
+        "draw": 9,
+        "loss": 19,
+        "goalsFor": 42,
+        "goalsAgainst": 62,
+        "points": 30
+      },
+      {
+        "team": "Luton",
+        "played": 35,
+        "win": 6,
+        "draw": 7,
+        "loss": 22,
+        "goalsFor": 48,
+        "goalsAgainst": 77,
+        "points": 25
+      },
+      {
+        "team": "Burnley",
+        "played": 35,
+        "win": 5,
+        "draw": 9,
+        "loss": 21,
+        "goalsFor": 38,
+        "goalsAgainst": 70,
+        "points": 24
+      },
+      {
+        "team": "Sheffield United",
+        "played": 35,
+        "win": 3,
+        "draw": 7,
+        "loss": 25,
+        "goalsFor": 34,
+        "goalsAgainst": 97,
+        "points": 16
+      }
+    ]
+  }

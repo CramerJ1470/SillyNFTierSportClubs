@@ -5,7 +5,6 @@ import {FunctionsClient} from "@chainlink/contracts@1.3.0/src/v0.8/functions/v1_
 import {ConfirmedOwner} from "@chainlink/contracts@1.3.0/src/v0.8/shared/access/ConfirmedOwner.sol";
 import {FunctionsRequest} from "@chainlink/contracts@1.3.0/src/v0.8/functions/v1_0_0/libraries/FunctionsRequest.sol";
 
-
 /**
  * Request testnet LINK and ETH here: https://faucets.chain.link/
  * Find information on LINK Token Contracts and get the latest ETH and LINK faucets here: https://docs.chain.link/resources/link-token-contracts/
@@ -16,7 +15,7 @@ import {FunctionsRequest} from "@chainlink/contracts@1.3.0/src/v0.8/functions/v1
  * @notice This is an example contract to show how to make HTTP requests using Chainlink
  * @dev This contract uses hardcoded values and should not be used in production.
  */
-contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
+contract StandingsConsumerCF2 is FunctionsClient, ConfirmedOwner {
     using FunctionsRequest for FunctionsRequest.Request;
 
     // State variables to store the last request ID, response, and error
@@ -27,9 +26,6 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
 
     // Custom error type
     error UnexpectedRequestID(bytes32 requestId);
-
-  
- 
 
     // Event to log responses
     event Response(
@@ -47,17 +43,20 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
     // Fetch standings from the RapidAPI.
     // Documentation: "https://heisenbug-premier-league-live-scores-v1.p.rapidapi.com/
     string source =
-        "const FOOTBALL_DATA_API_KEY= args[0];"
-        "const headers = {'Content-Type': 'application/json',"
-        "'X-Auth-Token': FOOTBALL_DATA_API_KEY}"
-        "const config = {method: 'GET',headers: headers,url: `http://api.football-data.org/v4/competitions/PL/standings`}"
+        "const headers = {"
+        "'host': 'api.sportradar.com',};"
+        "const config = {"
+        "accept: 'application/json',"
+        "headers: headers,"
+        "url: `https://api.sportradar.com/soccer/trial/v4/en/seasons/sr%3Aseason%3A118689/standings.json?api_key=${args[0]}`};"
         "const apiResponse = Functions.makeHttpRequest(config);"
-        "if (apiResponse.error) {console.error(apiResponse.error)throw Error('Request failed')}"
-        "const { data } = await apiResponse;"
-        "let standingsObj = data.standings[0].table;"
+        "if (apiResponse.error) {"
+        "console.error(apiResponse.error);"
+        "throw Error('Request failed');}"
+        "const {data}  = await apiResponse;"
+        "let standingsObj = data.standings[0].groups[0].standings;"
         "let standingsString = '';"
-        "for (let x = 0; x < standingsObj.length; x++) {standingsString=standingsString+standingsObj[x].team.tla;}"
-        "///LIVARSNOTCHEMCIAVLNEWBHABOUFULCRYBREMUNEVEWHUTOTWOLIPSLEISOU"
+        "for (let x = 0; x < standingsObj.length; x++) {standingsString =standingsString + standingsObj[x].competitor.abbreviation + '/';}"
         "return Functions.encodeString(standingsString);";
 
     //Callback gas limit
@@ -69,15 +68,13 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
         0x66756e2d657468657265756d2d7365706f6c69612d3100000000000000000000;
 
     // State variable to store the returned team standings information
-    
+
     /**
      * @notice Initializes the contract with the Chainlink router address and sets the contract owner
      */
-    constructor(
-        
-    ) FunctionsClient(router) ConfirmedOwner(msg.sender) {}
+    constructor() FunctionsClient(router) ConfirmedOwner(msg.sender) {}
 
-      /**
+    /**
      * @notice Sends an HTTP request for character information
      * @param subscriptionId The ID for the Chainlink subscription
      * @param args The arguments to pass to the HTTP request
@@ -102,10 +99,10 @@ contract GettingStartedFunctionsConsumer is FunctionsClient, ConfirmedOwner {
         return s_lastRequestId;
     }
 
+    function getStandings() public view returns (string memory) {
+        return standings;
+    }
 
-function getStandings() public view returns (string memory) {
-    return standings;
-}
     /**
      * @notice Callback function for fulfilling a request
      * @param requestId The ID of the request to fulfill
@@ -126,11 +123,9 @@ function getStandings() public view returns (string memory) {
 
         // Decode the response into a string array (standings)
         standings = string(abi.encodePacked(response));
-         
-
 
         // Emit an event to log the response
-        
+
         emit Response(requestId, standings, s_lastResponse, s_lastError);
     }
 }

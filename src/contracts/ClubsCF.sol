@@ -1,43 +1,16 @@
 // SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./StandingsConsumerCF.sol"; // Import Chainlink Functions Consumer
-import "./SportToken.sol";
-import "./Player.sol";
-
-contract Club is ERC20 {
-    string public logo; //https address of team logo
-    uint256 public stadiumSize; //stadium capacity
-    uint256 public avgSeatPrice; //average stadium seat price
-    string public clubCity; //city of stadium
-    string public clubCoach; //current manager
-    uint256 public clubStanding; //current standing
-    uint256 public clubPrice; //currentClubPrice;
-
-    constructor(
-        string memory name,
-        string memory symbol,
-        uint256 amount,
-        string memory _logo,
-        uint256 _stadiumSize,
-        uint256 _avgSeatPrice,
-        string memory _clubCity,
-        string memory _clubCoach,
-        uint256 _clubStanding
-    ) ERC20(name, symbol) {
-        _mint(msg.sender, amount);
-
-        logo = _logo;
-        stadiumSize = _stadiumSize;
-        avgSeatPrice = _avgSeatPrice;
-        clubCity = _clubCity;
-        clubCoach = _clubCoach;
-        clubStanding = _clubStanding;
-    }
-}
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+import "./StandingsConsumer.sol"; // Import Chainlink Functions Consumer
+import {SportToken} from "./SportToken.sol";
+import {Player} from "./Player.sol";
+import {Club} from "./Club.sol";
 
 contract ClubsFactory is Ownable {
     mapping(string => address) public clubs; //input=> clubName:clubAddress
@@ -48,17 +21,25 @@ contract ClubsFactory is Ownable {
     mapping(string => string[]) public teamsPlayerList; //input=> clubName:array of playersNames
     string[] public clubsList;
     uint256 public clubsLength;
+    string[] public standingsArray;
+    uint64 subscriptionId;
+    string public standings;
+
+    string[] empty;
 
     // Chainlink Functions consumer contract address (settable)
     address public functionsConsumer;
 
     SportToken sportToken;
+    GettingStartedFunctionsConsumer standingsConsumer;
 
     constructor(
         address initialOwner,
-        address _sportToken
+        address _sportToken,
+        address _functionsConsumer
     ) Ownable(initialOwner) {
         sportToken = SportToken(_sportToken);
+        standingsConsumer = GettingStartedFunctionsConsumer(_functionsConsumer);
     }
 
     // Set the address of the FunctionsConsumer contract after deployment
@@ -66,20 +47,43 @@ contract ClubsFactory is Ownable {
         address _functionsConsumer
     ) external onlyOwner {
         functionsConsumer = _functionsConsumer;
+        standingsConsumer = GettingStartedFunctionsConsumer(_functionsConsumer);
     }
 
-        // Call Chainlink Functions to update team standings
-    function updateStandings(uint64 subscriptionId, string[] calldata args) external onlyOwner {
-        GettingStartedFunctionsConsumer(functionsConsumer).sendRequest(subscriptionId, args);
+    function getStandings() public view returns (string[] memory) {
+        string memory standingsString = string(abi.encodePacked(standings)); // Convert bytes32 to string
+        return splitString(standingsString);
     }
 
-        // Function to be called by Chainlink Functions to update standings
-    function setStandings(string[] memory _standings) public onlyOwner {
-        standings = _standings;
-    }
+    function splitString(
+        string memory str
+    ) public pure returns (string[] memory) {
+        uint256 count = 1;
+        bytes memory strBytes = bytes(str);
 
-     function getStandings() public view returns (string[] memory) {
-        return standings;
+        // Count occurrences of commas to determine array size
+        for (uint256 i = 0; i < strBytes.length; i++) {
+            if (strBytes[i] == ",") {
+                count++;
+            }
+        }
+
+        // Initialize the array
+        string[] memory result = new string[](count);
+        uint256 index = 0;
+        bytes memory word;
+
+        for (uint256 i = 0; i < strBytes.length; i++) {
+            if (strBytes[i] == ",") {
+                result[index] = string(word);
+                index++;
+                word = ""; // Reset word
+            } else {
+                word = abi.encodePacked(word, strBytes[i]);
+            }
+        }
+        result[index] = string(word); // Add last word
+        return result;
     }
 
     function addClub(
@@ -91,9 +95,26 @@ contract ClubsFactory is Ownable {
         uint256 avgSeatPrice,
         string memory clubCity,
         string memory clubCoach,
-        uint256 clubStanding
+        uint256 clubStanding,
+        uint256 clubPrice
     ) public onlyOwner {
         require(clubs[name] == address(0), "Club exists");
+
+        uint256 matchesPerSeason = 38; //Premier league
+        uint256 floorNum;
+        if (clubStanding > 0) {
+            floorNum = 10 - (clubStanding / 5);
+        } else {
+            floorNum = 10 - (clubStanding - 1) / 5;
+        }
+        clubPrice =
+            matchesPerSeason *
+            avgSeatPrice *
+            stadiumSize *
+            floorNum *
+            10e12;
+
+        clubPrices[name] = clubPrice;
 
         clubs[name] = address(
             new Club(
@@ -105,11 +126,69 @@ contract ClubsFactory is Ownable {
                 avgSeatPrice,
                 clubCity,
                 clubCoach,
-                clubStanding
+                clubStanding,
+                clubPrice
             )
         );
+        clubPrices[name] = clubPrice;
         clubsList.push(name);
-        clubsLength = clubsList.length;
+    }
+
+    function initialClubPrice(
+        uint256 i_clubStanding,
+        uint256 i_stadiumSize,
+        uint256 i_avgSeatPrice
+    ) internal pure returns (uint256) {
+        uint256 matchesPerSeason = 38; //Premier league
+        uint256 floorNum;
+        if (i_clubStanding > 0) {
+            floorNum = 10 - (i_clubStanding / 5);
+        } else {
+            floorNum = 10 - (i_clubStanding - 1) / 5;
+        }
+        uint256 i_clubPrice = matchesPerSeason *
+            i_avgSeatPrice *
+            i_stadiumSize *
+            floorNum *
+            10e12;
+        return i_clubPrice;
+    }
+
+    function setClubPrice(
+        string memory clubName,
+        uint256 _clubStanding
+    ) public returns (uint256) {
+        uint64 matchesPerSeason = 38; //Premier league
+        uint64 floorNum;
+
+        Club club = Club(clubs[clubName]);
+        if (_clubStanding > 0) {
+            floorNum = 10 - uint64(_clubStanding / 5);
+        } else {
+            floorNum = 10 - uint64(_clubStanding - 1) / 5;
+        }
+
+        uint256 clubPrice = calculateClubPrice(
+            matchesPerSeason,
+            floorNum,
+            club
+        );
+        clubPrices[clubName] = clubPrice;
+        return clubPrice;
+    }
+
+    function calculateClubPrice(
+        uint64 matchesPerSeason,
+        uint64 floorNum,
+        Club club
+    ) public view returns (uint256) {
+        uint256 clubPrice = matchesPerSeason *
+            club.avgSeatPrice() *
+            club.stadiumSize() *
+            floorNum *
+            10e12; // 10e12 is equivalent to 10^13
+
+        return clubPrice;
     }
 
     function buyClubToken(
